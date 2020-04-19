@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use Core\Controller;
+use Core\View;
+use App\Model\Post;
 
 class Posts extends Controller
 {
@@ -32,5 +34,15 @@ class Posts extends Controller
 		echo 'Hello from the edit action in the Posts controller';
 		echo '<p>Query string paramaters: <pre>' . htmlspecialchars(print_r($this->route_params, true)) . '</pre></p>';
 		echo '<p>Query string paramaters: <pre>' . htmlspecialchars(print_r($_GET, true)) . '</pre></p>';
+	}
+
+	public function showAction() : void
+	{
+		//$posts = ['one','two','tree'];
+		$posts = Post::findAll();
+
+		View::render('Posts/index.php', [
+			'posts' => $posts
+		]);
 	}
 }
