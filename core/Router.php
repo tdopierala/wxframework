@@ -1,5 +1,6 @@
 <?php
 
+namespace Core;
 
 class Router
 {
@@ -24,7 +25,7 @@ class Router
 	 * 
 	 * @return void
 	 */
-	public function add($route, $params = [])
+	public function add(string $route, array $params = []) : void
 	{
 		// convert the route to a regular expression: escape forward slashes
 		$route = preg_replace('/\//', '\\/', $route);
@@ -46,7 +47,7 @@ class Router
 	 * 
 	 * @return array
 	 */
-	public function getRoutes()
+	public function getRoutes() : array
 	{
 		return $this->routes;
 	}
@@ -59,7 +60,7 @@ class Router
 	 * 
 	 * @return boolean true if a match found, false otherwise
 	 */
-	public function match($url)
+	public function match(string $url) : bool
 	{
 		/* foreach($this->routes as $route => $params) {
 			if($url == $route) {
@@ -94,9 +95,126 @@ class Router
 	 * 
 	 * @return array
 	 */
-	public function getParams()
+	public function getParams() : array
 	{
 		return $this->params;
+	}
+
+	/**
+	 * Dispatch the route
+	 * 
+	 * @param string $url The route URL
+	 * 
+	 * @return void
+	 */
+	public function disaptch(string $url) : void
+	{
+		$url = $this->removeQueryStringVariables($url);
+
+		if($this->match($url)) {
+			$controller = $this->params['controller'];
+			$controller = $this->convertToStudlyCaps($controller);
+			//$controller = "App\Controller\\$controller";
+			$controller = $this->getNamespace() . $controller;
+
+			if(class_exists($controller)) {
+				$controller_object = new $controller($this->params);
+
+				$action = $this->params['action'];
+				$action = $this->convertToCamelCase($action);
+
+				if(is_callable([$controller_object, $action]) && preg_match('/action$/i', $action) == 0) {
+					$controller_object->$action();
+				} else {
+					throw new \Exception("Method $action (in controller $controller) not found.");
+				}
+			} else {
+				throw new \Exception("Controller class $controller not found.");
+			}
+		} else {
+			throw new \Exception("No route matched.");
+		}
+	}
+
+	/**
+	 * Convert the string with hyphens to StudlyCaps
+	 * e.g. post-authors => PostAuthors
+	 * 
+	 * @param string $string The string to convert
+	 * 
+	 * @return string
+	 */
+	protected function convertToStudlyCaps(string $string) : string
+	{
+		return str_replace(' ', '', ucwords(str_replace('-', ' ', $string)));
+	}
+
+	/**
+	 * Convert the string with hyphens to camelCase
+	 * e.g. add-new => addNew
+	 * 
+	 * @param string $string The string convert
+	 * 
+	 * @return string
+	 */
+	protected function convertToCamelCase(string $string) : string
+	{
+		return lcfirst($this->convertToStudlyCaps($string));
+	}
+
+	/**
+	 * Remove the query string variables from the URL (if any). As the full
+	 * query string is used for the route, any varaiables at the end will need
+	 * to be removed before the route is matched to the routing trable. For
+	 * example:
+	 * 
+	 * 		URL								$_SERVER['QUERY_STRING']	Route
+	 * 		-------------------------------------------------------------------
+	 * 		localhost						''							''
+	 * 		localhost/?						''							''
+	 * 		localhost/?page=1				page=1						''
+	 * 		localhost/posts?page=1			posts&page=1				posts
+	 * 		localhost/posts/index			posts/index					posts/index
+	 * 		localhost/posts/index?page=1	posts/index?page=1			posts/index
+	 * 
+	 * A URL of the format localhost/?page (one variable name, no value) won't
+	 * work however. (NB. The .htaccess file converts the first ? to a & when
+	 * it's passed through to the $_SERVER variable).
+	 * 
+	 * @param string $url The full URL
+	 * 
+	 * @return string The URL with the query string variables removed
+	 */
+	protected function removeQueryStringVariables(string $url) : string
+	{
+		if($url != '') {
+			$parts = explode('&', $url, 2);
+
+			if(\strpos($parts[0], '=') === false) {
+				$url = $parts[0];
+			} else {
+				$url = '';
+			}
+		}
+
+		return $url;
+	}
+
+	/**
+	 * Get the namespace for the controller class. The namespace defined in the route
+	 * parameters is added if present.col-12
+	 * 
+	 * @return string The request URL
+	 */
+	protected function getNamespace() : string
+	{
+		$namespace = 'App\Controller\\';
+
+		if(array_key_exists('namespace', $this->params)) {
+			$namespace .= $this->params['namespace'] . '\\';
+		}
+
+		return $namespace;
 	}
 
 }
