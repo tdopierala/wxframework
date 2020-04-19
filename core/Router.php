@@ -120,6 +120,10 @@ class Router
 			if(class_exists($controller)) {
 				$controller_object = new $controller($this->params);
 
+				if(!array_key_exists('action', $this->params)) {
+					$this->params['action'] = 'index';
+				}
+
 				$action = $this->params['action'];
 				$action = $this->convertToCamelCase($action);
 

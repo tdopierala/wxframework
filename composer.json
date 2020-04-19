@@ -1,5 +1,14 @@
 {
-    "name": "tdopierala/wxframework",
-    "type": "project",
-    "require": {}
+	"name": "tdopierala/wxframework",
+	"description": "",
+	"type": "project",
+    "require": {
+        "twig/twig": "^3.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"Core\\": "Core/",
+			"App\\": "App/"
+		}
+	}
 }
