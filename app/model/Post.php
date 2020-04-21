@@ -22,15 +22,15 @@ class Post extends Model
 	{
 		$db = static::getDB();
 
-		try {
+		//try {
 			
 			$stmt = $db->query("SELECT id, title, date, text FROM posts ORDER BY id ASC");
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			return $result;
 
-		} catch(PDOException $e) {
-			echo $e->getMessage();
-		}
+		//} catch(PDOException $e) {
+		//	echo $e->getMessage();
+		//}
 	}
 }

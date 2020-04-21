@@ -34,4 +34,10 @@ class Config
 	 */
 	const DB_PASSWORD = 'wxframework';
 
+	/**
+	 * Show or hide error messages on screen
+	 * @var boolean
+	 */
+	const SHOW_ERRORS = true;
+
 }
