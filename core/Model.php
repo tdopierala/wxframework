@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Core;
 
@@ -23,15 +24,9 @@ abstract class Model
 
 		if($db === null) {
 
-			//try {
+			$db = new PDO("mysql:host=" . Config::DB_HOST . ";dbname=" . Config::DB_NAME . ";charset=utf8", Config::DB_USER, Config::DB_PASSWORD);
 
-				$db = new PDO("mysql:host=" . Config::DB_HOST . ";dbname=" . Config::DB_NAME . ";charset=utf8", Config::DB_USER, Config::DB_PASSWORD);
-
-				$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-			//} catch(PDOException $e) {
-			//	echo $e->getMessage();
-			//}
+			$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
 
 		return $db;

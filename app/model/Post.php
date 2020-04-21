@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Model;
 
@@ -22,15 +23,9 @@ class Post extends Model
 	{
 		$db = static::getDB();
 
-		//try {
-			
-			$stmt = $db->query("SELECT id, title, date, text FROM posts ORDER BY id ASC");
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$stmt = $db->query("SELECT id, title, date, text FROM posts ORDER BY id ASC");
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-			return $result;
-
-		//} catch(PDOException $e) {
-		//	echo $e->getMessage();
-		//}
+		return $result;
 	}
 }

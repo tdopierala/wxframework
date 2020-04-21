@@ -1,7 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Core;
 
+/**
+ * Router class.
+ * 
+ */
 class Router
 {
 
@@ -62,19 +67,10 @@ class Router
 	 */
 	public function match(string $url) : bool
 	{
-		/* foreach($this->routes as $route => $params) {
-			if($url == $route) {
-				$this->params = $params;
-				return true;
-			}
-		} */
-
-		//$reg_exp = "/^(?P<controller>[a-z-]+)\/(?P<action>[a-z-]+)$/";
 
 		foreach($this->routes as $route => $params) {
 
 			if(preg_match($route, $url, $matches)) {
-				//$params = [];
 
 				foreach($matches as $key => $match) {
 					if(is_string($key)){
