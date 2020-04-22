@@ -21,7 +21,7 @@ class View
 	{
 		\extract($args, EXTR_SKIP);
 
-		$file = "../App/View/$view"; //relative to the core directory
+		$file = "../src/View/$view"; //relative to the core directory
 
 		if(is_readable($file)) {
 			require $file;

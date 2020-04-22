@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Core;
 
 use PDO;
-use Config\Config;
+use Core\Config;
 
 /**
  * Base model
@@ -22,9 +22,17 @@ abstract class Model
 	{
 		static $db = null;
 
+		$config = Config::getInstance();
+
 		if($db === null) {
 
-			$db = new PDO("mysql:host=" . Config::DB_HOST . ";dbname=" . Config::DB_NAME . ";charset=utf8", Config::DB_USER, Config::DB_PASSWORD);
+			$db = new PDO(
+				"mysql:host=" . $config::get('datasource/default/dbhost')
+				.";dbname=" . $config::get('datasource/default/dbname')
+				.";charset=utf8",
+				$config::get('datasource/default/dbuser'),
+				$config::get('datasource/default/dbpassword')
+			);
 
 			$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}

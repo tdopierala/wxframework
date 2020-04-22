@@ -36,7 +36,7 @@ class Error
 	 * 
 	 * @return void
 	 */
-	public static function exceptionHandler(\Exception $exception) : void
+	public static function exceptionHandler(?\Exception $exception) : void
 	{
 		//Code is 404 (not found) or 500 (general error)
 		$code = $exception->getCode();

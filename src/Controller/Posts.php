@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use Core\Controller;
 use Core\View;
+use Core\Config;
 use App\Model\Post;
 
 class Posts extends Controller
@@ -39,11 +40,14 @@ class Posts extends Controller
 
 	public function showAction() : void
 	{
-		//$posts = ['one','two','tree'];
+		$config = Config::getInstance();
+
+		$posts = ['one','two','tree'];
 		$posts = Post::findAll();
 
 		View::render('Posts/index.php', [
-			'posts' => $posts
+			'posts' => $posts,
+			'config' => $config::get('datasource/default/dbhost')
 		]);
 	}
 }
