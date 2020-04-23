@@ -28,9 +28,9 @@ class Router
 	 * @param string $route The route url
 	 * @param array $params Parameters (controller, action, etc.)
 	 * 
-	 * @return void
+	 * @return string
 	 */
-	public function add(string $route, array $params = []) : void
+	public function add(string $route, array $params = []) : string
 	{
 		// convert the route to a regular expression: escape forward slashes
 		$route = preg_replace('/\//', '\\/', $route);
@@ -45,6 +45,8 @@ class Router
 		$route = '/^' . $route . '$/i';
 
 		$this->routes[$route] = $params;
+
+		return $route;
 	}
 
 	/**

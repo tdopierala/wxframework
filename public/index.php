@@ -8,7 +8,7 @@ set_exception_handler('Core\Error::exceptionHandler');
 
 $router = new Core\Router();
 
-$router->add('', ['controller' => 'Home', 'action' => 'index']);
+$router->add('', ['controller' => 'Home', 'action' => 'index']); // /^$/i
 //$router->add('posts', ['controller' => 'Posts', 'action' => 'index']);
 //$router->add('posts/new', ['controller' => 'Posts', 'action' => 'new']);
 $router->add('{controller}/{action}/{id:\d+}');
