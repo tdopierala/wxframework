@@ -9,7 +9,7 @@
 	<h1>Hallo <?= $name ?></h1>
 	<p>
 		<ul>
-		<?php foreach($colours as $color) { ?>
+		<?php foreach ($colours as $color) { ?>
 			<li><?= $color ?></li>
 		<?php } ?>
 		</ul>

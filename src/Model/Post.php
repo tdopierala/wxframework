@@ -6,17 +6,16 @@ namespace App\Model;
 use Core\Model;
 use PDO;
 
-
 /**
  * Post model
- * 
+ *
  */
 class Post extends Model
 {
 
 	/**
 	 * Get all the posts as an associative array
-	 * 
+	 *
 	 * @return array
 	 */
 	public static function findAll()

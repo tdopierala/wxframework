@@ -10,10 +10,9 @@ class Home extends Controller
 {
 	public function indexAction() : void
 	{
-		View::render('Home/index.php',[
+		View::render('Home/index.php', [
 			'name' => 'Tom',
 			'colours' => ['black', 'white', 'blue'],
 		]);
 	}
-
 }
